@@ -27,7 +27,7 @@ audio_out = I2S(
 
 wav = open(WAV_FILE, "rb")
 
-wav_samples = bytearray(BUFFER_LENGTH_IN_BYTES / 2)
+wav_samples = bytearray(BUFFER_LENGTH_IN_BYTES // 2)
 wav_samples_mv = memoryview(wav_samples)
 
 
