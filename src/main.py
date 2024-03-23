@@ -13,6 +13,7 @@ connect_to_wifi()
 
 mqtt = MQTTClient('ringer', config['mqtt_server'], keepalive=10)
 
+mqtt.set_last_will('device/lwt', 'ringer')
 
 def update_state():
   global mqtt
