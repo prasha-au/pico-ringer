@@ -9,11 +9,9 @@
 
 
 ### Flash Micropython
-You can grab the MicroPython firmware from [this page](https://micropython.org/download/ESP8266_GENERIC/).
-After that you can just load it using...
-```
-esptool.py --port COM6 --baud 115200 write_flash --flash_size=detect 0 [filepath]
-```
+You can grab the MicroPython firmware for a Pi Pico W from [this page](https://micropython.org/download/RPI_PICO_W/).
+Drag/drop as per usual.
+
 
 ### Config file
 Create a config file for credentials in `src/config.json`...
@@ -29,13 +27,36 @@ Create a config file for credentials in `src/config.json`...
 
 
 ## Developing
-The easiest way to develop is to use `mpremote` to mount the src folder. From there you can play around in REPL or import a whole script in.
+The easiest way to develop is to use `mpremote` to mount the src folder.
+
+
+To being clear out the `main.py` file and reboot. This allows you to use other commands without interference.
+```python
+import os
+os.remove('main.py')
 ```
-mpremote connect COM6
-mpremote soft-reset mount src
+
+
+You can then mount the src folder...
+```bash
+mpremote mount src
 ```
+
+
+From REPL you can start executing code. To "hot reload" a file you can run the following command.
+This will let you import updated code.
+```python
+from utils import clear_mod
+clear_mod(ringer)
+```
+
+
+
 
 ## Formatting
 ```
 autopep8 src
 ```
+
+
+

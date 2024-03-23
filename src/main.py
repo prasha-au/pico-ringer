@@ -1,8 +1,9 @@
 
 from utils import get_config, connect_to_wifi, turn_off_ap
-from lib.umqtt.robust import MQTTClient
+from lib.umqtt.robust2 import MQTTClient
 from ringer import ring
 import json
+import utime
 
 turn_off_ap()
 
@@ -10,7 +11,7 @@ config = get_config()
 
 connect_to_wifi()
 
-mqtt = MQTTClient("picoring", config['mqtt_server'])
+mqtt = MQTTClient('ringer', config['mqtt_server'], keepalive=10)
 
 
 def update_state():
@@ -24,7 +25,7 @@ def update_state():
   }))
 
 
-def sub_cb(topic, msg):
+def sub_cb(topic, msg, _retained, _duplicate):
   if topic == b'device/requestRegister':
     update_state()
     return
@@ -42,5 +43,22 @@ mqtt.subscribe(b'device/requestRegister')
 
 update_state()
 
+loopcount = 0
 while True:
-  mqtt.wait_msg()
+  loopcount = (loopcount + 1) % 100
+  utime.sleep_ms(500)
+  if mqtt.is_conn_issue():
+    while mqtt.is_conn_issue():
+      mqtt.reconnect()
+      update_state()
+    else:
+      mqtt.resubscribe()
+
+  if loopcount % 5 == 0:
+    mqtt.ping()
+
+  for _ in range(100):
+    mqtt.check_msg()
+    if not mqtt.things_to_do():
+      break
+    utime.sleep_ms(1)

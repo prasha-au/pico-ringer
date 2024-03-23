@@ -1,5 +1,7 @@
 import json
 import network
+import sys
+import gc
 
 
 def get_config():
@@ -21,3 +23,8 @@ def connect_to_wifi():
 def turn_off_ap():
   ap_if = network.WLAN(network.AP_IF)
   ap_if.active(False)
+
+
+def clear_mod(mod):
+  del sys.modules[mod.__name__]
+  gc.collect()
