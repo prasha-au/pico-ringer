@@ -1,5 +1,12 @@
+# Pico Ringer
 
-## Development
+This is a simple MicroPython project to forward a Ring chime from my [HomeNode](https://prasha.au/project/homenode) automation system to speakers.
+
+A Pi Pico W listens for MQTT messages and uses a PCM5102A DAC to play the sound via a 3.5mm output.
+
+
+
+## Setup development environment
 
 ### Python venv
 1. Install `python3`
@@ -30,7 +37,7 @@ Create a config file for credentials in `src/config.json`...
 The easiest way to develop is to use `mpremote` to mount the src folder.
 
 
-To being clear out the `main.py` file and reboot. This allows you to use other commands without interference.
+To begin clear out the `main.py` file and reboot. This allows you to use other commands without interference.
 ```python
 import os
 os.remove('main.py')
@@ -49,14 +56,5 @@ This will let you import updated code.
 from utils import clear_mod
 clear_mod(ringer)
 ```
-
-
-
-
-## Formatting
-```
-autopep8 src
-```
-
 
 
